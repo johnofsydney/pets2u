@@ -3,19 +3,39 @@ export const compute = (animals) => {
     throw new Error ('wrong animal!')
   }
 
-  let requiredBoxes = [];
+  const requiredBoxes = [];
 
-  // the sapce that the animals will take up
-  let requiredArea = animals.reduce( (area, animal) => {
-    let animalArea = ANIMAL_INFO[animal].area
-    return area + animalArea
-  },0)
+  // how many snake boxes
+  const snakeBoxes = animals.reduce( (count, animal) => {
+    let a = (animal == 'S') ? 1 : 0;
+    return (count + a)
+  }, 0)
 
-  // for now, preserve original calculation
-  let unallocatedArea = requiredArea;
-  console.log(`unallocatedArea ${unallocatedArea}`)
+  // how many small animals
+  let smallAnimals = animals.reduce( (count, animal) => {
+    let a = (animal == 'R' || animal == 'H') ? 1 : 0;
+    return (count + a)
+  }, 0)
 
-  while (unallocatedArea > 0) {
+  // if there are small animals, squeeze them into the snake boxes
+  // store the number of remaining small animals
+  smallAnimals = smallAnimals > snakeBoxes ? smallAnimals - snakeBoxes : 0;
+
+  // calculates Boxes for snakes and companions
+  for (let index = 0; index < snakeBoxes; index++) {
+    requiredBoxes.push('B3')
+  }
+
+  // how many medium animals
+  let mediumAnimals = animals.reduce( (count, animal) => {
+    let a = (animal == 'M') ? 1 : 0;
+    return (count + a)
+  }, 0)
+
+
+  // 3 - depends on how many animals we have
+  let unallocatedArea = (smallAnimals * 400) + (mediumAnimals * 800)
+    while (unallocatedArea > 0) {
     if (unallocatedArea > 800) {
       requiredBoxes.push('B3')
       unallocatedArea = unallocatedArea - 1600
@@ -32,36 +52,3 @@ export const compute = (animals) => {
 
   return(requiredBoxes.sort());
 };
-
-
-
-const ANIMAL_INFO = {
-  R: {
-    name: "Rat",
-    area: 400
-  },
-  H: {
-    name: "Hedgehog",
-    area: 400
-  },
-  M: {
-    name: "Mongoose",
-    area: 800
-  },
-  S: {
-    name: "Snake",
-    area: 1200
-  }
-}
-
-const BOX_INFO = {
-  B1: {
-    area: 400
-  },
-  B2: {
-    area: 800
-  },
-  B3: {
-    area: 1600
-  }
-}
