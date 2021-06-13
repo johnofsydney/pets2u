@@ -60,7 +60,7 @@ const transform = (sentence) => {
 const consolidate = (animals) => {
   let snakes = animals['S'];
   let mongeese = animals['M'];
-  let smallAnimals = animals['H']+ animals['R'];
+  let smallAnimals = animals['H'] + animals['R'];
 
   // we can squeeze a small animal in with each snake
   let remainingSmallAnimals = smallAnimals > snakes ? smallAnimals - snakes : 0;
